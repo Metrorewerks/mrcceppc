@@ -20,7 +20,7 @@ workspace "mrcceppc"
 	staticruntime "on"
 
 	systemversion "latest"
-	characterset "unicode"
+	characterset "ascii"
 	architecture "x86"
 	warnings "extra"
 
