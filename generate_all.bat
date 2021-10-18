@@ -1,0 +1,3 @@
+@echo off
+echo Generating project files...
+call "tools/premake5.exe" vs2019 --file=premake.lua --v10 --v27
