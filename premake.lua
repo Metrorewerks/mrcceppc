@@ -7,6 +7,7 @@ newoption {
 	trigger = "v27",
 	description = "Allows premake to make a project for 2.7",
 }
+
 workspace "mrcceppc"
 	location "./build/"
 
