@@ -1,7 +1,6 @@
 #pragma once
 
 #define BINARY_PAYLOAD_SIZE 0x4500000
-#define TLS_PAYLOAD_SIZE 0x4500000
 
 namespace loader
 {
