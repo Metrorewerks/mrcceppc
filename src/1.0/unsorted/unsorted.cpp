@@ -27,16 +27,15 @@ auto unsorted::do_exit(std::uint32_t exit_code) -> void
 auto unsorted::start() -> void
 {
 	unsorted::sub_401110((std::uint32_t)reinterpret_cast<void(__cdecl**)()>(0x00508020));
-	//unsorted::sub_401DF0();
-	memory::call<void __cdecl()>(0x00401DF0)();
+	memory::call<void __cdecl()>(0x00401DF0)(); //unsorted::sub_401DF0();
 
-	if (!memory::call<bool __cdecl()>(0x00402080)())
+	if (!unsorted::sub_402080())
 	{
 		do_exit(0xFFFFFFFF);
 	}
 
 	memory::call<void __cdecl()>(0x004022D0)();
-	memory::call<void __cdecl()>(0x00402450)();
+	unsorted::sub_402450();
 	memory::call<void __cdecl(std::uint32_t, std::uint32_t)>(0x00402480)(memory::get<std::uint32_t>(0x005588C0), memory::get<std::uint32_t>(0x005588B0));
 }
 
@@ -157,4 +156,24 @@ auto unsorted::sub_401DF0() -> void
 		*(std::uint32_t*)(memory::get<std::uint32_t>(0x00558654) + 4 * v8) = 0;
 		::FreeEnvironmentStringsA(penv);
 	}
+}
+
+auto unsorted::sub_402080() -> bool
+{
+	return memory::call<bool __cdecl()>(0x00401FC0)() &&
+		memory::call<bool __cdecl(int)>(0x00402030)(0);
+}
+
+auto unsorted::sub_402450() -> void
+{
+	void(__cdecl **i)(); // ebx
+
+	for (i = reinterpret_cast<void(__cdecl**)()>(0x0054C004); *i; ++i)
+	{
+		(*i)();
+	}
+
+	//push offset sub_404DB0	| cast with *(int*)
+	//call sub_402150			| call as normal
+	memory::call<void __cdecl(int)>(0x00402150)(*(int*)memory::call<int __cdecl()>(0x00404DB0)());
 }
