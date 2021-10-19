@@ -61,9 +61,9 @@ workspace "mrcceppc"
 
 	configuration "Release"
 		defines "NDEBUG"
-		optimize "debug"
-		runtime "debug"
-		symbols "on"
+		optimize "full"
+		runtime "release"
+		symbols "off"
 
 	configuration "Debug"
 		defines "DEBUG"
