@@ -11,4 +11,6 @@ namespace unsorted
 	auto sub_401DF0() -> void;
 	auto sub_402080() -> bool;
 	auto sub_402450() -> void;
+	auto sub_4022D0() -> void;
+	auto sub_402480(const std::uint32_t& a1, const std::uint32_t& a2) -> void;
 }

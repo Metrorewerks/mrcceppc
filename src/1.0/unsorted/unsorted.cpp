@@ -11,6 +11,13 @@ auto unsorted::do_exit(std::uint32_t exit_code) -> void
 		while (memory::get<int>(0x0054E118) > 0)
 		{
 			memory::set<int>(0x0054E118, memory::get<int>(0x0054E118) - 1);
+
+			/*
+			* 
+			--dword_54E118;
+			(*(&dword_54E018 + dword_54E118))();
+
+			*/
 		}
 
 		memory::call<void __cdecl (int)>(0x00403DB0)(0);
@@ -27,22 +34,20 @@ auto unsorted::do_exit(std::uint32_t exit_code) -> void
 auto unsorted::start() -> void
 {
 	unsorted::sub_401110((std::uint32_t)reinterpret_cast<void(__cdecl**)()>(0x00508020));
-	memory::call<void __cdecl()>(0x00401DF0)(); //unsorted::sub_401DF0();
+	unsorted::sub_401DF0();
 
 	if (!unsorted::sub_402080())
 	{
 		do_exit(0xFFFFFFFF);
 	}
 
-	memory::call<void __cdecl()>(0x004022D0)();
+	unsorted::sub_4022D0();
 	unsorted::sub_402450();
-	memory::call<void __cdecl(std::uint32_t, std::uint32_t)>(0x00402480)(memory::get<std::uint32_t>(0x005588C0), memory::get<std::uint32_t>(0x005588B0));
+	unsorted::sub_402480(memory::get<std::uint32_t>(0x005588C0), memory::get<std::uint32_t>(0x005588B0));
 }
 
 auto unsorted::sub_401110(const std::uint32_t& a1) -> void
 {
-	//[/!\]\\
-
 	std::uint32_t v1; // esi
 	std::uint32_t v2; // ebp
 
@@ -69,6 +74,8 @@ auto unsorted::sub_401110(const std::uint32_t& a1) -> void
 
 auto unsorted::sub_401DF0() -> void
 {
+	return memory::call<void __cdecl()>(0x00401DF0)();
+
 	//[/!\]\\
 
 	//This function is not properly writing the data at 0x00555768
@@ -176,4 +183,111 @@ auto unsorted::sub_402450() -> void
 	//push offset sub_404DB0	| cast with *(int*)
 	//call sub_402150			| call as normal
 	memory::call<void __cdecl(int)>(0x00402150)(*(int*)memory::call<int __cdecl()>(0x00404DB0)());
+}
+
+auto unsorted::sub_4022D0() -> void
+{
+	return memory::call<void __cdecl()>(0x004022D0)();
+
+	//[/!\]\\
+
+	char* v0; // esi
+	int v1; // edi
+	int* v2; // eax
+	int v3; // ebx
+	bool v4; // al
+	int v5; // eax
+	int v6; // [esp+4h] [ebp-10h]
+
+	v6 = 1;
+	memory::set(0x005588C0, 0);
+	memory::set(0x005588B0, memory::call<int* __cdecl(std::uint32_t)>(0x00404610)(4u));
+
+	v0 = GetCommandLineA();
+	v1 = (int)memory::call<int* __cdecl(std::uint32_t)>(0x00404610)(strlen(v0) + 1);
+	memory::set(0x0054E220, v1);
+
+	if (memory::get<int*>(0x005588B0) && memory::get<int>(0x0054E220) != 0)
+	{
+		while (memory::call<char* __cdecl(char*, int)>(0x00404ED0)(reinterpret_cast<char*>(0x0050825C), *v0))
+		{
+			++v0;
+		}
+
+	LABEL_26:
+		while (*v0)
+		{
+			if (memory::get<int>(0x005588C0) + 1 >= v6)
+			{
+				v6 += 16;
+				v2 = memory::call<int* __cdecl(int*, std::uint32_t)>(0x004046D0)(memory::get<int*>(0x005588B0), 4 * v6);
+
+				if (!v2)
+				{
+					break;
+				}
+
+				memory::set(0x005588B0, v2);
+			}
+
+			memory::set(0x005588C0, memory::get<int>(0x005588C0) + 1);
+			reinterpret_cast<int*>(0x005588B0)[memory::get<int>(0x005588C0)] = v1;
+
+			v3 = 0;
+
+			while (*v0)
+			{
+				if (!v3 && memory::call<char* __cdecl(char*, char)>(0x00404ED0)(reinterpret_cast<char*>(0x0050825C), *v0))
+				{
+					do
+					{
+						++v0;
+					}
+					while (*v0 && memory::call<char* __cdecl(char*, char)>(0x00404ED0)(reinterpret_cast<char*>(0x0050825C), *v0));
+
+					v1++;
+					v1 = 0;
+
+					goto LABEL_26;
+				}
+				v4 = *v0;
+				if (*v0 == 34)
+				{
+					v5 = 0;
+					++v0;
+					if (!v3)
+						v5 = 1;
+					v3 = v5;
+				}
+				else if (v4 == 92 && v0[1] == 34)
+				{
+					v1++;
+					v1 = 34;
+					v0 += 2;
+				}
+				else
+				{
+					++v0;
+					v1++;
+					v1 = v4;
+				}
+			}
+		}
+
+		v1 = 0;
+
+		reinterpret_cast<int*>(0x005588B0)[memory::get<int>(0x005588C0)] = 0;
+
+		memory::call<void __cdecl(std::uint32_t*)>(0x00402150)
+			((uint32_t*)memory::get<void (__cdecl*)()>(0x00402270));
+	}
+	else
+	{
+		memory::call<void __cdecl()>(0x004022B0)();
+	}
+}
+
+auto unsorted::sub_402480(const std::uint32_t& a1, const std::uint32_t& a2) -> void
+{
+	return memory::call<void __cdecl(std::uint32_t, std::uint32_t)>(0x00402480)(a1, a2);
 }
