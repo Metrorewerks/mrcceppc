@@ -2,19 +2,18 @@
 
 #include <memory/memory.hpp>
 
-auto unsorted::do_exit(std::uint32_t exit_code) -> void
+auto unsorted::do_exit(const std::uint32_t& exit_code) -> void
 {
 	if (!memory::get<bool>(0x00557950))
 	{
 		memory::call<void __cdecl(int)>(0x00403D90)(0);
 
-		while (memory::get<int>(0x0054E118) > 0)
+		while (unsorted::dword_54E118 > 0)
 		{
-			memory::set<int>(0x0054E118, memory::get<int>(0x0054E118) - 1);
+			--unsorted::dword_54E118;
 
 			/*
 
-			--dword_54E118;
 			(*(&dword_54E018 + dword_54E118))();
 
 			*/
@@ -33,7 +32,10 @@ auto unsorted::do_exit(std::uint32_t exit_code) -> void
 
 auto unsorted::start() -> void
 {
-	unsorted::sub_401110((std::uint32_t)reinterpret_cast<void(__cdecl**)()>(0x00508020));
+	//useless?
+	//unsorted::sub_401110((std::uint32_t)reinterpret_cast<void(__cdecl**)()>(0x00508020));
+	//
+
 	unsorted::sub_401DF0();
 
 	if (!unsorted::sub_402080())
@@ -51,7 +53,7 @@ void unsorted::sub_401110(const std::uint32_t& a1)
 	std::uint32_t v1; // esi
 	std::uint32_t v2; // ebp
 
-	v1 = memory::get<std::uint32_t>(0x0054E000);
+	v1 = unsorted::dword_54E000;
 	v2 = 0;
 
 	while (v1 && **(std::uint32_t**)v1 > **(std::uint32_t**)a1)
@@ -68,7 +70,11 @@ void unsorted::sub_401110(const std::uint32_t& a1)
 	}
 	else
 	{
-		memory::set<std::uint32_t>(0x0054E000, a1);
+		unsorted::dword_54E000 = a1;
+
+		// rem
+		memory::set<std::uint32_t>(0x0054E000, unsorted::dword_54E000);
+		//
 	}
 }
 
@@ -167,8 +173,7 @@ void unsorted::sub_401DF0()
 
 bool unsorted::sub_402080()
 {
-	return memory::call<bool __cdecl()>(0x00401FC0)() &&
-		memory::call<bool __cdecl(int)>(0x00402030)(0);
+	return unsorted::sub_401FC0() && memory::call<bool __cdecl(int)>(0x00402030)(0);
 }
 
 void unsorted::sub_402450()
@@ -291,3 +296,46 @@ void unsorted::sub_402480(const std::uint32_t& a1, const std::uint32_t& a2)
 {
 	return memory::call<void __cdecl(std::uint32_t, std::uint32_t)>(0x00402480)(a1, a2);
 }
+
+bool unsorted::sub_401FC0()
+{
+	memory::call<bool __cdecl()>(0x00401FC0)();
+
+	//[/!\]\\
+
+	if (memory::get<std::uint32_t>(0x00508228) != -1)
+	{
+		return true;
+	}
+
+	unsorted::dwTlsIndex = ::TlsAlloc();
+
+	if (memory::get<std::uint32_t>(0x00508228) == -1)
+	{
+		return false;
+	}
+
+	unsorted::sub_402150((std::uint32_t*)memory::call<bool __cdecl()>(0x00402000)());
+
+	return true;
+}
+
+void unsorted::sub_402150(std::uint32_t* a1)
+{
+	return memory::call<void __cdecl(std::uint32_t*)>(0x00402150)(a1);
+
+	//[/!\]\\
+
+	if (unsorted::dword_54E118 != 64)
+	{
+		memory::call<void __cdecl(int)>(0x00403D90)(0);	//enter_critical_section(0);
+
+		*(memory::get<void(__cdecl**)()>(0x0054E018) + unsorted::dword_54E118++) = (void(__cdecl*)())a1;
+
+		memory::call<void __cdecl(int)>(0x00403DB0)(0); //leave_critical_section(0);
+	}
+}
+
+int unsorted::dword_54E000;
+int unsorted::dwTlsIndex = -1;
+int unsorted::dword_54E118;
