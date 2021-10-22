@@ -13,7 +13,7 @@ auto unsorted::do_exit(std::uint32_t exit_code) -> void
 			memory::set<int>(0x0054E118, memory::get<int>(0x0054E118) - 1);
 
 			/*
-			* 
+
 			--dword_54E118;
 			(*(&dword_54E018 + dword_54E118))();
 
@@ -38,7 +38,7 @@ auto unsorted::start() -> void
 
 	if (!unsorted::sub_402080())
 	{
-		do_exit(0xFFFFFFFF);
+		unsorted::do_exit(0xFFFFFFFF);
 	}
 
 	unsorted::sub_4022D0();
@@ -46,7 +46,7 @@ auto unsorted::start() -> void
 	unsorted::sub_402480(memory::get<std::uint32_t>(0x005588C0), memory::get<std::uint32_t>(0x005588B0));
 }
 
-auto unsorted::sub_401110(const std::uint32_t& a1) -> void
+void unsorted::sub_401110(const std::uint32_t& a1)
 {
 	std::uint32_t v1; // esi
 	std::uint32_t v2; // ebp
@@ -72,7 +72,7 @@ auto unsorted::sub_401110(const std::uint32_t& a1) -> void
 	}
 }
 
-auto unsorted::sub_401DF0() -> void
+void unsorted::sub_401DF0()
 {
 	return memory::call<void __cdecl()>(0x00401DF0)();
 
@@ -165,13 +165,13 @@ auto unsorted::sub_401DF0() -> void
 	}
 }
 
-auto unsorted::sub_402080() -> bool
+bool unsorted::sub_402080()
 {
 	return memory::call<bool __cdecl()>(0x00401FC0)() &&
 		memory::call<bool __cdecl(int)>(0x00402030)(0);
 }
 
-auto unsorted::sub_402450() -> void
+void unsorted::sub_402450()
 {
 	void(__cdecl **i)(); // ebx
 
@@ -185,7 +185,7 @@ auto unsorted::sub_402450() -> void
 	memory::call<void __cdecl(int)>(0x00402150)(*(int*)memory::call<int __cdecl()>(0x00404DB0)());
 }
 
-auto unsorted::sub_4022D0() -> void
+void unsorted::sub_4022D0()
 {
 	return memory::call<void __cdecl()>(0x004022D0)();
 
@@ -287,7 +287,7 @@ auto unsorted::sub_4022D0() -> void
 	}
 }
 
-auto unsorted::sub_402480(const std::uint32_t& a1, const std::uint32_t& a2) -> void
+void unsorted::sub_402480(const std::uint32_t& a1, const std::uint32_t& a2)
 {
 	return memory::call<void __cdecl(std::uint32_t, std::uint32_t)>(0x00402480)(a1, a2);
 }

@@ -2,15 +2,15 @@
 
 namespace unsorted
 {
-	auto start() -> void;
+	void start();
 
-	auto do_exit(std::uint32_t exit_code) -> void;
+	void do_exit(std::uint32_t exit_code);
 
 	//no names
-	auto sub_401110(const std::uint32_t& a1) -> void;
-	auto sub_401DF0() -> void;
-	auto sub_402080() -> bool;
-	auto sub_402450() -> void;
-	auto sub_4022D0() -> void;
-	auto sub_402480(const std::uint32_t& a1, const std::uint32_t& a2) -> void;
+	void sub_401110(const std::uint32_t& a1);
+	void sub_401DF0();
+	bool sub_402080();
+	void sub_402450();
+	void sub_4022D0();
+	void sub_402480(const std::uint32_t& a1, const std::uint32_t& a2);
 }
