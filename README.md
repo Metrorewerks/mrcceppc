@@ -14,4 +14,4 @@ For extensive testing, we recommend using one of the projects over at https://gi
 
 # Codebase Information
 ### Comment Legend
-- `//[/!\]\\` : wrong or garunteed to fail code; important to rework
+- `//[/!\]\\` : wrong or guaranteed to fail code; important to rework
